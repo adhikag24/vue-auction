@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { database } from 'firebase/database';
+import { initializeApp } from '@firebase/app';
+import {getDatabase, ref, set, child, get, onValue} from '@firebase/database'
 
 
 // firebase init - add your own config here
@@ -15,14 +15,19 @@ const firebaseConfig = {
 }
 let app = initializeApp(firebaseConfig)
 // utils
-let db = app.database();
+let db = getDatabase();
 
 console.log(db);
 // collection references
-const transactionCollection = db.collection('likes')
+const transactionCollection = db.app.automaticDataCollectionEnabled
 
 // export utils/refs
 export {
   db,
+  ref,
+  set,
+  child,
+  get,
+  onValue,
   transactionCollection
 }

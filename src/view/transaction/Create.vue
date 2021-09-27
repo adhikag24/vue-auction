@@ -86,10 +86,12 @@ export default {
             //     validation.value = err.response.data
             // });
 
-            fb.push(transaction)
+
+            fb.set(fb.ref(fb.db, 'transactions/0'), transaction)
            .then((result) => {
                 router.push({
-                    name: 'transaction.index'
+                    name: 'transaction.index' 
+
                 });
             }).catch((err) => {
                 validation.value = err.response.data

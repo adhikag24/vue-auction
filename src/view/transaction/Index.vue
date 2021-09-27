@@ -23,21 +23,22 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(transaction, index) in transactions" :key="index">
+                                    
                                     <td>{{transaction.title}}</td>
                                     <td>{{transaction.amount}}</td>
                                     <td>{{transaction.type}}</td>
                                     <td>
-                                        <div class="btn-group">
+                                        <!-- <div class="btn-group">
                                             <router-link
-                                            :to="{name: 'transaction.edit',params:{id: transaction._id}}"
+                                            :to="{name: 'transaction.edit',params:{id: transaction.id}}"
                                             class="btn btn-sm btn-outline-info"
                                             >Edit
                                             </router-link>
                                             <button class="btn btn-sm btn-outline-danger"
-                                            @click.prevent="destroy(transaction._id, index)"
+                                            @click.prevent="destroy(transaction.id, index)"
                                             >
                                             Delete</button>
-                                        </div>
+                                        </div> -->
                                     </td>
                                 </tr>
                             </tbody>
@@ -52,6 +53,7 @@
 <script>
 import axios from 'axios'
 import {onMounted, ref} from 'vue'
+import * as fb from '../../util/firebase.js'
 
 
 export default {
@@ -59,17 +61,39 @@ export default {
     setup() {
         //reactive state
         let transactions = ref([]);
+        const dbRef = fb.ref(fb.db);
+
+        function getData(){
+            fb.get(fb.child(dbRef, 'transactions/')).then((snapshot) => {
+            if (snapshot.exists()) {
+                transactions.value = snapshot.val()
+                console.log(snapshot.val());
+            } else {
+                console.log("No data available");
+            }
+            }).catch((error) => {
+            console.error(error);
+            });
+        }
 
         onMounted(() => {
             //get data from api endpoint
-            axios.get('https://crudcrud.com/api/4682bf7fdfa14d94a4eb20c7cdd18aef/transaction')
-            .then((result) => {
-                transactions.value = result.data
-                console.log(result.data)
-            }).catch((err) => {
-                console.log(err.response)
+            // axios.get('https://crudcrud.com/api/4682bf7fdfa14d94a4eb20c7cdd18aef/transaction')
+            // .then((result) => {
+            //     transactions.value = result.data
+            //     console.log(result.data)
+            // }).catch((err) => {
+            //     console.log(err.response)
+            // });
+            // getData()
+            const transactionsCountRef = fb.ref(fb.db, 'transactions/');
+            fb.onValue(transactionsCountRef, (snapshot) => {
+                let data = snapshot.val();
+                transactions.value = data
             });
+        
         });
+    
 
         function destroy(id, index) {
             console.log(id);
@@ -83,8 +107,8 @@ export default {
         }
 
         return {
-            transactions,
-            destroy
+            transactions
+            // destroy
         }
     }   
 }
