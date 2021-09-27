@@ -1,6 +1,7 @@
 import { initializeApp } from '@firebase/app';
 import {getDatabase, ref, set, child, get, onValue} from '@firebase/database'
-
+import { getAuth, onAuthStateChanged,createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import router from '../router';
 
 // firebase init - add your own config here
 const firebaseConfig = {
@@ -17,6 +18,8 @@ let app = initializeApp(firebaseConfig)
 // utils
 let db = getDatabase();
 
+let auth = getAuth();
+
 console.log(db);
 // collection references
 const transactionCollection = db.app.automaticDataCollectionEnabled
@@ -28,6 +31,12 @@ export {
   set,
   child,
   get,
+  auth,
   onValue,
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithEmailAndPassword,
   transactionCollection
 }

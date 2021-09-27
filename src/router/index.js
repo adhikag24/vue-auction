@@ -15,6 +15,16 @@
         path: '/edit/:id',
         name: 'transaction.edit',
         component: () => import("../view/transaction/Edit.vue")
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import("../view/auth/Login.vue")
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () => import("../view/auth/Register.vue")
     }
  ]; 
 

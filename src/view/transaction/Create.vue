@@ -58,7 +58,7 @@
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import axios from 'axios'
-import * as fb from '../../util/firebase.js'
+import * as fb from '../../utils/firebase.js'
 
 export default {
     setup(){
