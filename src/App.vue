@@ -16,32 +16,60 @@
             <router-link to="/Contact" class="nav-link">Contact</router-link>
         </div>
         <form class="d-flex">
-            <button class="btn btn-warning shadow" @click="Logout" >Logout</button>
+          <div v-if="userData != null">
+            <button class="btn btn-warning shadow" @click="Logout">Logout</button>
+          </div>
+          <div v-else>
+             <router-link :to="{name: 'Login'}" tag="button" class="btn btn-success shadow">Login</router-link>
+          </div>
         </form>
     </div>
 </nav>
  </div>
+ 
   <router-view></router-view>
+
 </template>
 
 <script>
 
-import {onBeforeMount} from 'vue';
+import {onBeforeMount,ref} from 'vue';
 import * as auth from './utils/firebase-auth.js'
+import * as fb from './utils/firebase.js'
+import { getAuth} from "firebase/auth";
+
 
 export default {
     name: 'App',
 
+    
+
     setup(){
-     onBeforeMount(() => {
-            auth.checkAuth();
+      const userData = ref("");
+     onBeforeMount(async () => {
+            // auth.checkAuth();
+            fb.getAuth().onAuthStateChanged((user) => {
+                         console.log(user);
+                        userData.value = user;
+                })
         });
+
+        const getUser = async () => {
+           return await auth.getUserSession();
+        }
+
+        // const user = await getUser
+
+        // console.log("data",user)
 
         const Logout = () => {
             auth.signOut();
         }
+
         return{
-          Logout
+          Logout,
+          userData
+          // isLogin,
         }
 
     }

@@ -7,6 +7,7 @@
                 :to="{name: 'transaction.create'}"
                 class="btn btn-primary btn-sm rounded shadow mb-3"
                 >Add</router-link>
+    <button-counter> asdasd</button-counter>
 
 
                 <div class="card rounded shadow">
@@ -57,6 +58,7 @@
 <script>
 import axios from 'axios'
 import {onBeforeMount, onMounted, ref} from 'vue'
+import { mapGetters } from "vuex";
 import * as fb from '../../utils/firebase.js'
 import * as auth from '../../utils/firebase-auth.js'
 
@@ -67,6 +69,7 @@ export default {
         const name = ref("");
         let transactions = ref([]);
         const dbRef = fb.ref(fb.db);
+        
 
        onBeforeMount(() => {
                 fb.getAuth().onAuthStateChanged((user) => {
@@ -77,9 +80,7 @@ export default {
                 })
         });
 
-        const Logout = () => {
-            auth.signOut();
-        }
+        
 
         onMounted(() => {
             const transactionsCountRef = fb.ref(fb.db, 'transactions/');
@@ -104,10 +105,10 @@ export default {
 
         return {
             transactions,
-            Logout,
             name    
             // destroy
         }
     }   
 }
+
 </script>

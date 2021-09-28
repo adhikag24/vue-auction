@@ -17,20 +17,16 @@ function checkAuth(){
   })
 }
     
- function getUserSession (){
-    const auth = fb.getAuth();
-    const user = auth.currentUser;
-    if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        // ...
-        console.log("test3",user);
-        return user;
+function getUserSession() {
+  return new Promise((resolve) => {
+    fb.auth.onAuthStateChanged((user) => {
+      if (!user) {
+        resolve(null);
       } else {
-        // No user is signed in.
-        console.log("test4",user)
+        resolve(user);
       }
- 
+    });
+  });
 }
 
 function register(email,password){
