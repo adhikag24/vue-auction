@@ -1,14 +1,11 @@
 <template>
     <div class="container my-5">
-        <h1>Welcome, {{name}}</h1>
-        <div class="row justify-content-center">
-            <div class="col-8">
-                <router-link 
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row mt-5" v-for="(transaction, index) in transactions" :key="index"> 
+                <!-- <router-link 
                 :to="{name: 'transaction.create'}"
                 class="btn btn-primary btn-sm rounded shadow mb-3"
                 >Add</router-link>
-    <button-counter> asdasd</button-counter>
-
 
                 <div class="card rounded shadow">
                     <div class="card-header">
@@ -47,8 +44,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> -->
 
+                <ProductCard v-bind:product="transaction"/>
                 
             </div>
         </div>
@@ -58,12 +56,14 @@
 <script>
 import axios from 'axios'
 import {onBeforeMount, onMounted, ref} from 'vue'
-import { mapGetters } from "vuex";
 import * as fb from '../../utils/firebase.js'
-import * as auth from '../../utils/firebase-auth.js'
+import ProductCard from '../../components/ProductCard.vue'
 
 export default {
-    
+     components: {
+      ProductCard,
+    },
+
     setup() {
         //reactive state
         const name = ref("");
@@ -86,8 +86,10 @@ export default {
             const transactionsCountRef = fb.ref(fb.db, 'transactions/');
             fb.onValue(transactionsCountRef, (snapshot) => {
                 let data = snapshot.val();
+                console.log('data:',data)
                 transactions.value = data
             });
+
         
         });
     
