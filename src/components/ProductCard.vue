@@ -1,6 +1,6 @@
 <template>
    
-        <div class="col-sm-4">
+        
             <div class="card"> <img src="https://i.imgur.com/z55ax9e.jpeg"  class="card-img-top img-fluid img-thumbnail" width="100%">
                 <div class="card-body pt-0 px-0">
                    <div class="mt-3">{{product.product_name}}</div>
@@ -15,20 +15,20 @@
                             <h6>Rp.{{product.highest_bid}}</h6>
                         </div>
                     </div>
-                   <div class="d-flex flex-row justify-content-between px-3 pb-4">
+                   <div class="d-flex flex-row justify-content-between px-3 pb-2">
                          <div class="d-flex flex-column"><span class="text-muted">Total Bidder:</span></div>
                         <div class="d-flex flex-column">
                             <h6><strong>{{product.total_bidder}}</strong></h6>
                         </div>
                     </div>
                     <div class="mx-3 mt-3 mb-2"><button type="button" class="btn btn-danger btn-block"><small>Place Bid</small></button></div> 
-                   <vue-countdown :time="time" :interval="100" v-slot="{ days, hours, minutes, seconds, milliseconds }">
-    New Year Countdown：{{ days }} days, {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
-  </vue-countdown>
+                  <div class="mt-3">
+                   <vue-countdown :time="time" :interval="100" v-slot="{ days, hours, minutes, seconds }">
+    Time Left: {{ days }}d {{ hours }}h {{ minutes }}m {{ seconds }}s
+  </vue-countdown></div>
+
                 </div>
             </div>
-        </div>
-       
        
     
  
@@ -45,7 +45,8 @@ export default {
         highest_bid: String,
         total_bidder: Number,
         initial_price: String,
-        product_display_image: String
+        product_display_image: String,
+        end_date: String
         }
     
     },
@@ -53,8 +54,9 @@ export default {
       VueCountdown,
     },
      data() {
-    const now = new Date();
-    const newYear = new Date(now.getFullYear() + 1, 0, 1);
+        const now = new Date();
+        const newYear = new Date(this.product.end_date);
+
 
     return {
       time: newYear - now,
@@ -71,10 +73,6 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 
-body {
-    background: #F5F1EE;
-    font-family: 'Roboto', sans-serif
-}
 
 .card {
     width: 250px;
@@ -130,9 +128,4 @@ small.justify-content-center {
     text-decoration: underline
 }
 
-@media screen and (max-width:600px) {
-    .col-sm-4 {
-        margin-bottom: 50px
-    }
-}
 </style>
