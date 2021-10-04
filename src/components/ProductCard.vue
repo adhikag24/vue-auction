@@ -21,7 +21,11 @@
                             <h6><strong>{{product.total_bidder}}</strong></h6>
                         </div>
                     </div>
-                    <div class="mx-3 mt-3 mb-2"><button type="button" class="btn btn-danger btn-block"><small>Place Bid</small></button></div> 
+                    <div class="mx-3 mt-3 mb-2"><button type="button" class="btn btn-danger btn-block"><small> <router-link
+                                            :to="{name: 'transaction.productdetail',params:{slug: product.product_slug}}"
+                                            
+                                            >Detail
+                                            </router-link></small></button></div> 
                   <div class="mt-3">
                    <vue-countdown :time="time" :interval="100" v-slot="{ days, hours, minutes, seconds }">
     Time Left: {{ days }}d {{ hours }}h {{ minutes }}m {{ seconds }}s
@@ -46,7 +50,8 @@ export default {
         total_bidder: Number,
         initial_price: String,
         product_display_image: String,
-        end_date: String
+        end_date: String,
+        product_slug: String
         }
     
     },

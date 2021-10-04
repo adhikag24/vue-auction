@@ -17,6 +17,11 @@
         component: () => import("../view/transaction/Edit.vue")
     },
     {
+        path: '/product-detail/:slug',
+        name: 'transaction.productdetail',
+        component: () => import("../view/transaction/DetailProduct.vue")
+    },
+    {
         path: '/login',
         name: 'Login',
         component: () => import("../view/auth/Login.vue")

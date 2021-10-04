@@ -40,7 +40,7 @@ export default {
         
 
         onMounted(() => {
-            const transactionsCountRef = fb.ref(fb.db, 'transactions/');
+            const transactionsCountRef = fb.ref(fb.db, 'products/');
             fb.onValue(transactionsCountRef, (snapshot) => {
                 let data = snapshot.val();
                 console.log('data:',data)
