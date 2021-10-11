@@ -5,7 +5,7 @@
 
                 <div class="card rounded shadow">
                     <div class="card-header">
-                        Create Transaction
+                        Request Product
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="store()">
@@ -25,7 +25,8 @@
                             </div>
                                <div class="mb-3">
                                 <label for="" class="form-label">End Date</label>
-                                <input type="text" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" v-model="transaction.time">
+                                
+                                <input type="date" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" v-model="transaction.time">
                                 <div v-if="validation.time" class="text-danger">
                                     {{validation.time}}
                                 </div>
@@ -41,8 +42,8 @@
                                 </div>
                             </div>
                               <div class="mb-3">
-                                <label for="" class="form-label">Product Image</label>
-                                <input type="text" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" v-model="transaction.time">
+                                <label for="" class="form-label">Product Images</label>
+                                <input type="file" name="imagesArray" class="form-control" multiple @change="onChange" >
                                 <div v-if="validation.time" class="text-danger">
                                     {{validation.time}}
                                 </div>
@@ -107,6 +108,40 @@ export default {
             router,
             store
         }
-    }    
+    },  
+      data() {
+      return {
+         imagesArray: null
+      };
+    },
+     methods: {
+        onChange (event) {
+          this.imagesArray = event.target.files
+
+            let baseImageArr = [];
+
+            
+            for (const i of Object.keys(this.imagesArray)) {
+                  var reader = new FileReader();
+                reader.onloadend = function() {
+                    console.log('RESULT', reader.result)
+                }
+                reader.readAsDataURL(this.imagesArray[i]);
+                baseImageArr.push(this.imagesArray[i])
+            }
+          console.log(baseImageArr[0]);
+        },
+        onUpload() {
+          const formData = new FormData();
+          for (const i of Object.keys(this.imagesArray)) {
+            formData.append('imagesArray', this.imagesArray[i])
+          }
+          console.log(formData);
+        //   axios.post('http://localhost:8888/api/multi-images-upload', formData, {
+        //   }).then((res) => {
+        //     console.log(res)
+        //   })
+        }  
+    }  
 } 
 </script>
