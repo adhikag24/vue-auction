@@ -7,7 +7,7 @@
         component: () => import("../view/transaction/Index.vue")
     },
     {
-        path: '/create',
+        path: '/request-product',
         name: 'transaction.create',
         component: () => import("../view/transaction/Create.vue")
     },

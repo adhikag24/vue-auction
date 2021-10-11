@@ -4,7 +4,10 @@
     <i class="fas fa-user"></i>  {{name}}
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" href="#">Request Product</a></li>
+    <li><router-link 
+                :to="{name: 'transaction.create'}"
+                class="dropdown-item"
+                >Request Product</router-link></li>
     <li><a class="dropdown-item" href="#">My Bids</a></li>
     <li><a class="dropdown-item" href="#">My Products</a></li>
   </ul>

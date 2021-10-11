@@ -2,10 +2,6 @@
       <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-8">
-                <router-link 
-                :to="{name: 'transaction.index'}"
-                class="btn btn-primary btn-sm rounded shadow mb-3"
-                >Back</router-link>
 
                 <div class="card rounded shadow">
                     <div class="card-header">
@@ -14,21 +10,21 @@
                     <div class="card-body">
                         <form @submit.prevent="store()">
                             <div class="mb-3">
-                                <label for="" class="form-label">Title</label>
+                                <label for="" class="form-label">Product Name</label>
                                 <input type="text" class="form-control" v-model="transaction.title">
                                 <div v-if="validation.title" class="text-danger">
                                     {{validation.title}}
                                 </div>
                             </div>
                                <div class="mb-3">
-                                <label for="" class="form-label">Amount</label>
+                                <label for="" class="form-label">Starting Price</label>
                                 <input type="number" class="form-control" v-model="transaction.amount">
                                 <div v-if="validation.amount" class="text-danger">
                                     {{validation.amount}}
                                 </div>
                             </div>
                                <div class="mb-3">
-                                <label for="" class="form-label">Time</label>
+                                <label for="" class="form-label">End Date</label>
                                 <input type="text" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" v-model="transaction.time">
                                 <div v-if="validation.time" class="text-danger">
                                     {{validation.time}}
@@ -42,6 +38,13 @@
                                 </select>
                                 <div v-if="validation.type" class="text-danger">
                                     {{validation.type}}
+                                </div>
+                            </div>
+                              <div class="mb-3">
+                                <label for="" class="form-label">Product Image</label>
+                                <input type="text" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" v-model="transaction.time">
+                                <div v-if="validation.time" class="text-danger">
+                                    {{validation.time}}
                                 </div>
                             </div>
                             <button class="btn btn-outline-primary">Submit</button>
