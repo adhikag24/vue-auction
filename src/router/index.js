@@ -12,6 +12,11 @@
         component: () => import("../view/transaction/Create.vue")
     },
     {
+        path: '/my-product',
+        name: 'myproduct',
+        component: () => import("../view/profile/MyProduct.vue")
+    },
+    {
         path: '/edit/:id',
         name: 'transaction.edit',
         component: () => import("../view/transaction/Edit.vue")

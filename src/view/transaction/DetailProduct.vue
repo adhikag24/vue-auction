@@ -61,6 +61,7 @@ export default {
 
         const router = useRouter();
 
+
         const route = useRoute();
 
         function changeImage(element) {
