@@ -4,13 +4,13 @@
         <div class="row g-0">
             <div class="col-md-6 border-end">
                 <div class="d-flex flex-column justify-content-center">
-                    <div class="main_image"> <img src="https://i.imgur.com/TAzli1U.jpg" id="main_product_image" width="350"> </div>
+                    <div class="main_image"> <img :src="product.product_images" id="main_product_image" width="350"> </div>
                     <div class="thumbnail_images">
                         <ul id="thumbnail">
-                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/TAzli1U.jpg" width="70"></li>
-                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/w6kEctd.jpg" width="70"></li>
-                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/L7hFD8X.jpg" width="70"></li>
-                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/6ZufmNS.jpg" width="70"></li>
+                            <li v-for="image in product.product_images" :key="image.id">
+                                <img v-on:click="changeImage(image)" :src="image" width="70">
+                            </li>
+                    
                         </ul>
                     </div>
                 </div>
@@ -18,72 +18,85 @@
             <div class="col-md-6">
                 <div class="p-3 right-side">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h3>IIlana</h3> <span class="heart"><i class='bx bx-heart'></i></span>
+                        <h3>{{product.product_name}}</h3> <span class="heart"><i class='bx bx-heart'></i></span>
                     </div>
                     <div class="mt-2 pr-3 content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                        <h5 >Starting Price: Rp.{{product.initial_price}}</h5>
                     </div>
-                    <h3>$430.99</h3>
+                    <h4>Current Highest Bid: </h4>
+                    <h3>Rp.{{product.highest_bid}}</h3>
                     <div class="ratings d-flex flex-row align-items-center">
-                        <div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div> <span>441 reviews</span>
+                        <div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div> <span>{{product.total_bidder}} Bidders</span>
                     </div>
-                    <div class="mt-5"> <span class="fw-bold">Color</span>
-                        <div class="colors">
-                            <ul id="marker">
-                                <li id="marker-1"></li>
-                                <li id="marker-2"></li>
-                                <li id="marker-3"></li>
-                                <li id="marker-4"></li>
-                                <li id="marker-5"></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="buttons d-flex flex-row mt-5 gap-3"> <button class="btn btn-outline-dark">Buy Now</button> <button class="btn btn-dark">Add to Basket</button> </div>
+                    <div class="buttons d-flex flex-row mt-5 gap-3" >  <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Bid Now</button></div>
                   
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Place a Bid</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Bid</label>
+            <div class="col-sm-10">
+            <input type="number" class="form-control" id="totalbid">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark">Submit Bid</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
+
+
 
 <script>
 import {reactive, ref, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import axios from 'axios'
+import * as fb from '../../utils/firebase.js'
+
 
 export default {
 
     setup(){
         //data binding
-   
-        let transactions = ref([]);
-
+        let product = ref([]);
         const router = useRouter();
-
-
         const route = useRoute();
 
-        function changeImage(element) {
-
-        var main_prodcut_image = document.getElementById('main_product_image');
-        main_prodcut_image.src = element.src;
-
         onMounted(() => {
-            const transactionsCountRef = fb.ref(fb.db, 'products/');
-            fb.onValue(transactionsCountRef, (snapshot) => {
+            const productCountRef = fb.ref(fb.db, 'products/' + route.params.slug);
+            fb.onValue(productCountRef, (snapshot) => {
                 let data = snapshot.val();
-                console.log('data:',data)
-                transactions.value = data
+                console.log('data:',data.product_images[0])
+                product.value = data
             });
-
-        
         });
+
+
+        function changeImage(imagesrc) {
+            var main_prodcut_image = document.getElementById('main_product_image');
+            main_prodcut_image.src = imagesrc;
+            console.log(imagesrc)
         }
 
         return {
             router,
             route,
+            product,
             changeImage
         }
     }    

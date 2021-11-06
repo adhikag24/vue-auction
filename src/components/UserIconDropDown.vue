@@ -9,7 +9,10 @@
                 class="dropdown-item"
                 >Request Product</router-link></li>
     <li><a class="dropdown-item" href="#">My Bids</a></li>
-    <li><a class="dropdown-item" href="#">My Products</a></li>
+    <li><router-link 
+                :to="{name: 'myproduct'}"
+                class="dropdown-item"
+                >My Products</router-link></li>
   </ul>
 </div>
 </template>

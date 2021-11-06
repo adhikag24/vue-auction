@@ -9,29 +9,39 @@
                     <th>End Date</th>
                     <th>Total Bidder</th>
                     <th>Current Bid Price</th>
-                    <th>Is Active</th>
                     <th>Is Approved</th>
                     <th>Images</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="product in productsData" :key="product.id">
+                <tr v-for="(product) in productsData" :key="product.id">
                     <td>{{product.name}}</td>
                     <td>{{product.starting_price}}</td>
                     <td>{{product.end_date}}</td>
+                    <td>{{product.total_bidder}}</td>
+                    <td>{{product.highest_bid}}</td>
+                    <td>{{product.is_active}}</td>
+                    <td><ImagesCarousel v-bind:images="product.images"></ImagesCarousel></td>
                 </tr>
             </tbody>
         </table>
     </div>    
+
+
 </template>
+
 
 <script>
 import * as auth from '../../utils/firebase-auth.js'
 import {reactive, ref, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import axios from 'axios'
+import ImagesCarousel from '../../components/ImagesCarousel.vue'
 
 export default {
+    components: {
+      ImagesCarousel,
+    },
     setup(){
         //data binding
         var productsData = ref([])
@@ -43,7 +53,7 @@ export default {
 
             axios.get(`http://localhost/auction-backend/public/my-product/${user.uid}`)
             .then((result) => {
-                console.log(JSON.stringify(result.data.data));
+                console.log(result.data.data);
                 productsData.value = result.data.data
             }).catch((err) => {
                 console.log(err.response)
