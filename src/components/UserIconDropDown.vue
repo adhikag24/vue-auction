@@ -8,7 +8,10 @@
                 :to="{name: 'transaction.create'}"
                 class="dropdown-item"
                 >Request Product</router-link></li>
-    <li><a class="dropdown-item" href="#">My Bids</a></li>
+     <li><router-link 
+                :to="{name: 'mybid'}"
+                class="dropdown-item"
+                >My Bids</router-link></li>
     <li><router-link 
                 :to="{name: 'myproduct'}"
                 class="dropdown-item"

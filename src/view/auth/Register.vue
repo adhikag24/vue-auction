@@ -1,21 +1,25 @@
 <template>
   <div class="register">
-    <h1>Register</h1>  
-     <form @submit.prevent="Register">
+    <!-- <h1>Register</h1>   -->
+     <!-- <form @submit.prevent="Register">
         <input type="text" placeholder="Email" v-model="email"> 
         <input type="password" placeholder="Password" v-model="password">
         <input type="submit" value="Register">
         <p>Have an account? <router-link to="/login">Login here</router-link></p>
-    </form> 
+    </form>  -->
+    <MultiForm/>
   </div>
 </template>
 
 <script>
 import {onBeforeMount,ref} from 'vue';
 import * as auth from '../../utils/firebase-auth.js'
-
+import MultiForm from '../../components/MultiForm.vue'
 
 export default {
+    components: {
+     MultiForm
+ },
 
     setup(){
         const email = ref("");

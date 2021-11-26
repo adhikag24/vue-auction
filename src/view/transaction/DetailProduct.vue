@@ -28,6 +28,10 @@
                     <div class="ratings d-flex flex-row align-items-center">
                         <div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div> <span>{{product.total_bidder}} Bidders</span>
                     </div>
+                    <div class="mt-3">
+                   <vue-countdown :time="time" :interval="100" v-slot="{ days, hours, minutes, seconds }">
+                        Time Left: {{ days }}d {{ hours }}h {{ minutes }}m {{ seconds }}s
+                    </vue-countdown></div>
                     <div class="buttons d-flex flex-row mt-5 gap-3" >  <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Bid Now</button></div>
                   
                 </div>
@@ -43,18 +47,20 @@
         <h5 class="modal-title" id="exampleModalLabel">Place a Bid</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form ref="form">
       <div class="modal-body">
         <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-2 col-form-label">Bid</label>
             <div class="col-sm-10">
-            <input type="number" class="form-control" id="totalbid">
+            <input type="number" name="amount" v-model="bid.amount" class="form-control" id="totalbid">
             </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-dark">Submit Bid</button>
+        <button type="button" class="btn btn-dark" v-on:click="submitBid">Submit</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
@@ -67,7 +73,8 @@ import {reactive, ref, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import axios from 'axios'
 import * as fb from '../../utils/firebase.js'
-
+import * as auth from '../../utils/firebase-auth.js'
+import VueCountdown from '@chenfengyuan/vue-countdown';
 
 export default {
 
@@ -76,6 +83,9 @@ export default {
         let product = ref([]);
         const router = useRouter();
         const route = useRoute();
+        var bid = {amount:'', userId: "", productId: ""};
+        const now = new Date();
+        let time = ref();
 
         onMounted(() => {
             const productCountRef = fb.ref(fb.db, 'products/' + route.params.slug);
@@ -83,7 +93,11 @@ export default {
                 let data = snapshot.val();
                 console.log('data:',data.product_images[0])
                 product.value = data
+
+                time.value = new Date(product.value.end_date);
+                time.value = time.value - now;
             });
+          
         });
 
 
@@ -93,11 +107,38 @@ export default {
             console.log(imagesrc)
         }
 
+       
+
         return {
+            time,
             router,
             route,
             product,
-            changeImage
+            changeImage,
+            bid
+        }
+    },
+    components: {
+      VueCountdown,
+    },
+    methods: {
+        async submitBid(){
+            if (this.bid.amount <= this.product.highest_bid || this.bid.amount <= this.product.initial_price){
+                alert("Your bid cannot be less then the highest bid.")
+            }else{
+                let user = await auth.getUserSession();
+                this.bid.userId = user.uid;
+                this.bid.productId = this.product.product_id;
+                axios.post('http://localhost/auction-backend/public/placebid', this.bid, {
+                headers: {},
+            }).then((res) => {
+                if(res.data.status == 200){
+                    console.log(res)
+                    alert("Success to place your bid.")
+                    // this.router.push('/')
+                }
+            })
+            }
         }
     }    
 } 

@@ -1,7 +1,7 @@
 <template>
    
         
-            <div class="card"> <img src="https://i.imgur.com/z55ax9e.jpeg"  class="card-img-top img-fluid img-thumbnail" width="100%">
+            <div class="card"> <img v-bind:src="product.product_images[0]"  class="card-img-top img-fluid img-thumbnail" width="100%">
                 <div class="card-body pt-0 px-0">
                    <div class="mt-3">{{product.product_name}}</div>
 
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="mx-3 mt-3 mb-2"><button type="button" class="btn btn-danger btn-block"><small> <router-link
-                                            :to="{name: 'transaction.productdetail',params:{slug: product.product_slug}}"
+                                            :to="{name: 'transaction.productdetail',params:{slug: product.product_id}}"
                                             
                                             >Detail
                                             </router-link></small></button></div> 
@@ -45,11 +45,12 @@ export default {
     name: 'ProductCard',
     props: {
         product :{
+        product_images: Array,
         product_name : String,
+        product_id : Number,
         highest_bid: String,
         total_bidder: Number,
         initial_price: String,
-        product_display_image: String,
         end_date: String,
         product_slug: String
         }

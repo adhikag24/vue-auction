@@ -15,7 +15,10 @@
         <SearchBar ></SearchBar> 
        
        <div class="d-flex flex-row bd-highlight mb-3">
-        <div class="p-2 bd-highlight"><UserIconDropDown></UserIconDropDown></div>
+         <div v-if="user != null">
+            <div class="p-2 bd-highlight"><UserIconDropDown></UserIconDropDown></div>
+          </div>
+        
         <div class="p-2 bd-highlight"><form class="d-flex">
           <div v-if="user != null">
             <button class="btn btn-warning shadow" @click="Logout">Logout</button>
@@ -36,6 +39,7 @@
 <script>
 import SearchBar from './SearchBar.vue'
 import UserIconDropDown from './UserIconDropDown.vue'
+import * as auth from '../utils/firebase-auth'
 
 export default {
     name: 'Header',
@@ -46,6 +50,11 @@ export default {
     props: {
         user: {},
     },
+    methods: {
+      Logout: function(){
+        auth.signOut();   
+      }
+    }
 
     
 }

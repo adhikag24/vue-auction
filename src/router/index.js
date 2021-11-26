@@ -12,6 +12,11 @@
         component: () => import("../view/transaction/Create.vue")
     },
     {
+        path: '/my-bid',
+        name: 'mybid',
+        component: () => import("../view/profile/Mybid.vue")
+    },
+    {
         path: '/my-product',
         name: 'myproduct',
         component: () => import("../view/profile/MyProduct.vue")

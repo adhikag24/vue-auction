@@ -10,7 +10,7 @@ function checkAuth(){
 
     fb.getAuth().onAuthStateChanged((user) => {
       if(!user){
-          router.replace('/login');
+          // router.replace('/login');
       } else if (route.path == "/login" || route.path == "/register"){
           router.replace('/');
       }
